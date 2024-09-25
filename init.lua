@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -215,6 +215,13 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
+
+-- require 'custom.scripts.rspec'
+-- require 'custom.scripts.test'
+--
+-- vim.api.nvim_set_keymap('n', '<leader>ka', ':lua testEntireSpec()<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<leader>kc', ':lua testLineInSpec()<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<leader>ks', ':lua openAssociatedSpec()<CR>', { noremap = true, silent = true })
 
 -- [[ Configure and install plugins ]]
 --
@@ -410,7 +417,31 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-      vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
+      local action_state = require 'telescope.actions.state'
+      vim.keymap.set('n', '<leader><leader>', function()
+        builtin.buffers({
+          initial_mode = 'normal',
+          attach_mappings = function(prompt_bufnr, map)
+            local delete_buf = function()
+              local current_picker = action_state.get_current_picker(prompt_bufnr)
+              current_picker:delete_selection(function(selection)
+                vim.api.nvim_buf_delete(selection.bufnr, { force = true })
+              end)
+            end
+
+            map('n', '<c-d>', delete_buf)
+
+            return true
+          end,
+        }, {
+          sort_lastused = true,
+          sort_mru = true,
+          theme = 'dropdown',
+          desc = '[ ] Find existing buffers',
+        })
+      end)
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -923,13 +954,14 @@ require('lazy').setup({
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  -- require 'custom.scripts.test',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
