@@ -11,4 +11,24 @@ vim.api.nvim_set_keymap('n', '<leader>ka', ':lua testEntireSpec()<CR>', { norema
 vim.api.nvim_set_keymap('n', '<leader>kc', ':lua testLineInSpec()<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>ks', ':lua openAssociatedSpec()<CR>', { noremap = true, silent = true })
 
+-- vim.api.nvim_create_augroup('goimports', { clear = true })
+-- vim.api.nvim_create_autocmd('BufWritePre', {
+--   group = 'goimports',
+--   pattern = '*.go',
+--   callback = function()
+--     -- Run goimports before saving
+--     vim.cmd 'silent! !goimports -w %'
+--   end,
+-- })
+--
+-- vim.api.nvim_create_augroup('gopls_format', { clear = true })
+-- vim.api.nvim_create_autocmd('BufWritePre', {
+--   group = 'gopls_format',
+--   pattern = '*.go',
+--   callback = function()
+--     -- Format the file using gopls on save
+--     vim.lsp.buf.format { async = false }
+--   end,
+-- })
+
 return {}
