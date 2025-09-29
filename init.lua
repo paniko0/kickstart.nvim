@@ -648,12 +648,6 @@ require('lazy').setup({
             symbols = true,
           },
         },
-        volar = {},
-        -- rubocop = {
-        --   mason = false,
-        --   cmd = { vim.fn.expand '/Users/dansouza/.asdf/installs/ruby/2.7.6/bin/rubocop', '--lsp' },
-        -- },
-        -- clangd = {},
         gopls = {
           analyses = {
             fieldalignment = false, -- find structs that would use less memory if their fields were sorted
