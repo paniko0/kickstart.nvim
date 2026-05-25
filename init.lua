@@ -649,6 +649,15 @@ require('lazy').setup({
           },
         },
         gopls = {
+          completion = true,
+          diagnostic = true,
+          folding = true,
+          references = true,
+          rename = true,
+          symbols = true,
+          autoformat = true,
+          completeUnimported = true,
+          usePlaceholders = true,
           analyses = {
             fieldalignment = false, -- find structs that would use less memory if their fields were sorted
             nilness = true,
@@ -776,7 +785,7 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        go = { 'goimports' },
+        go = { 'goimports', 'gopls' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
